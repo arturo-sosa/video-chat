@@ -3,9 +3,5 @@
   "exclude": [
     "node_modules",
     "dist"
-  ],
-  "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
-  }
+  ]
 }
