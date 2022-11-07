@@ -1,5 +1,5 @@
 import 'solid-js';
-import { createEffect, createResource, createSignal } from 'solid-js';
+import { createEffect, createResource } from 'solid-js';
 
 const Room = () => {
   const [room] = createResource(async () => {
@@ -25,7 +25,13 @@ const Room = () => {
 
   createEffect(updateRoomQuery);
 
-  return <div>Hello from solid</div>;
+  return <div class="h-8">
+    {
+      room.loading
+        ? <div>Waiting for room</div>
+        : <div>{`Room ${room().id}`}</div>
+    }
+  </div>;
 };
 
 export default Room;

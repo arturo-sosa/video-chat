@@ -1,11 +1,7 @@
-import { Accessor, createContext, createResource, createSignal, Resource, useContext } from 'solid-js';
-import { createStore } from "solid-js/store";
+import { useStore } from '@nanostores/solid';
+import { createEffect, createResource } from 'solid-js';
 
-interface StreamState {
-  userMedia: Resource<MediaStream>;
-}
-
-const StreamContext = createContext<StreamState>();
+import { mediaStream } from '../state/streamState';
 
 export const StreamProvider = (props) => {
   const [userMedia] = createResource(
@@ -17,13 +13,17 @@ export const StreamProvider = (props) => {
     )
   );
 
-  const [state] = createStore({ userMedia });
+  createEffect(() => {
+    if (userMedia.loading || userMedia.error) return;
 
-  return (
-    <StreamContext.Provider value={state}>
-      {props.children}
-    </StreamContext.Provider>
-  );
+    // console.log(userMedia());
+    mediaStream.set({ ...mediaStream.get(), mediaStream: userMedia() });
+  });
+
+  return <>{props.children}</>;
 };
 
-export const useStream = () => useContext(StreamContext);
+export const useStream = () => {
+  const stream = useStore(mediaStream);
+  return stream();
+};
