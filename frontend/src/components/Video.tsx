@@ -4,7 +4,7 @@ import { useStream } from './Stream';
 
 const Video = (props) => {
   const stream = useStream();
-  const video: HTMLVideoElement = <video class="w-1/2" /> as HTMLVideoElement;
+  const video: HTMLVideoElement = <video class="w-auto inline-block bg-black" /> as HTMLVideoElement;
 
   createEffect(() => {
     if (stream.mediaStream === undefined) return;
