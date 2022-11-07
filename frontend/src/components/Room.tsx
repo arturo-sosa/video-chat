@@ -1,7 +1,9 @@
 import 'solid-js';
 import { createEffect, createResource } from 'solid-js';
+import { useStream } from './Stream';
 
 const Room = () => {
+  const userStream = useStream();
   const [room] = createResource(async () => {
     const params = new URLSearchParams(window.location.search);
     const roomId = params.get('room');
@@ -25,12 +27,20 @@ const Room = () => {
 
   createEffect(updateRoomQuery);
 
-  return <div class="h-8">
+  return <div class="h-8 flex">
+    <div>
     {
       room.loading
         ? <div>Waiting for room</div>
         : <div>{`Room ${room().id}`}</div>
     }
+    </div>
+
+    <div class="flex flex-row">
+      <span class="mx-2">-</span>
+      {userStream.error && <div class="text-red-500">No device</div>}
+      {userStream.mediaStream && <div>Camera</div>}
+    </div>
   </div>;
 };
 

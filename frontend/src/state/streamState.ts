@@ -1,6 +1,9 @@
 import { atom } from 'nanostores';
 
-type StreamState = {
+export type StreamProps = {
   mediaStream: MediaStream | undefined;
+  muted: boolean;
+  error?: Error | undefined;
 };
-export const mediaStream = atom<StreamState>({ mediaStream: undefined });
+
+export const userStream = atom<StreamProps>({ mediaStream: undefined, muted: false });
