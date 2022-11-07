@@ -30,8 +30,8 @@ export const useRoom = () => {
 
     params.set('id', roomData().id);
     room.set({
-      loading: roomData.loading,
-      error: roomData.error,
+      loading: false,
+      error: undefined,
       id: roomData().id
     });
 
