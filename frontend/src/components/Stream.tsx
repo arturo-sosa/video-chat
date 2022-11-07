@@ -14,10 +14,12 @@ export const StreamProvider = (props) => {
   );
 
   createEffect(() => {
-    if (userMedia.loading || userMedia.error) return;
+    if (userMedia.loading) return;
 
-    // console.log(userMedia());
-    mediaStream.set({ ...mediaStream.get(), mediaStream: userMedia() });
+    if (userMedia.error)
+      mediaStream.set({ ...mediaStream.get(), mediaStream: undefined, error: Error(userMedia.error) });
+    else if (userMedia())
+      mediaStream.set({ ...mediaStream.get(), mediaStream: userMedia(), error: undefined });
   });
 
   return <>{props.children}</>;
