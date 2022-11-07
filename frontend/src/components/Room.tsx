@@ -3,7 +3,7 @@ import { createEffect, createResource } from 'solid-js';
 import { useStream } from './Stream';
 
 const Room = () => {
-  const stream = useStream();
+  const userStream = useStream();
   const [room] = createResource(async () => {
     const params = new URLSearchParams(window.location.search);
     const roomId = params.get('room');
@@ -38,8 +38,8 @@ const Room = () => {
 
     <div class="flex flex-row">
       <span class="mx-2">-</span>
-      {stream.error && <div class="text-red-500">No device</div>}
-      {stream.mediaStream && <div>Camera</div>}
+      {userStream.error && <div class="text-red-500">No device</div>}
+      {userStream.mediaStream && <div>Camera</div>}
     </div>
   </div>;
 };

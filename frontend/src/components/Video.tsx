@@ -1,16 +1,17 @@
 import 'solid-js';
 import { createEffect } from 'solid-js';
-import { useStream } from './Stream';
 
-const Video = (props) => {
-  const stream = useStream();
-  const video: HTMLVideoElement = <video class="w-auto inline-block bg-black" /> as HTMLVideoElement;
+type VideoProps = {
+  stream: MediaStream;
+  muted: boolean;
+};
+
+const Video = (props: VideoProps) => {
+  const video: HTMLVideoElement = <video class="bg-black h-60 w-80" /> as HTMLVideoElement;
 
   createEffect(() => {
-    if (stream.mediaStream === undefined) return;
-
-    video.srcObject = stream.mediaStream;
-    video.muted = props.muted ?? false;
+    video.srcObject = props.stream;
+    video.muted = props.muted;
     video.addEventListener('loadedmetadata', () => {
       video.play();
     });
