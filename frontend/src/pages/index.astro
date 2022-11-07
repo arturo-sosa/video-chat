@@ -1,16 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Room from '../components/Room';
+import { StreamProvider } from '../components/Stream';
+import Video from '../components/Video';
 ---
 
 <Layout title="Welcome to Astro.">
   <main id="app">
-    <Room client:load />
+		<StreamProvider client:load>
+			<Room client:load />
+			<Video client:load />
+		</StreamProvider>
   </main>
 </Layout>
 
 <style>
   main#app {
-    @apply flex h-full w-full justify-center;
+    @apply flex h-full w-full justify-center flex-row;
   }
 </style>
