@@ -7,3 +7,5 @@ export type StreamProps = {
 };
 
 export const userStream = atom<StreamProps>({ mediaStream: undefined, muted: false });
+
+export const streams = atom<Array<StreamProps>>([]);
