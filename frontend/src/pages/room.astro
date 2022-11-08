@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Room from '../components/Room';
+import StreamProvider from '../components/Stream';
+import VideoGrid from '../components/VideoGrid';
+---
+
+<Layout title="Welcome to Astro.">
+  <main id="app">
+		<StreamProvider client:load>
+			<Room client:load />
+			<VideoGrid client:load />
+		</StreamProvider>
+  </main>
+</Layout>
+
+<style>
+  main#app {
+    @apply container mx-auto flex h-full w-full items-center flex-col;
+  }
+</style>

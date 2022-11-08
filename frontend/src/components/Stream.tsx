@@ -1,7 +1,7 @@
 import { useStore } from '@nanostores/solid';
 import { createEffect, createResource } from 'solid-js';
 
-import { userStream } from '../state/streamState';
+import { StreamProps, streams, userStream } from '../state/streamState';
 
 export const StreamProvider = (props) => {
   const [userMedia] = createResource(
@@ -27,7 +27,22 @@ export const StreamProvider = (props) => {
 
 export const useStream = () => {
   const stream = useStore(userStream);
-  return stream();
+  const availableStreams = useStore(streams);
+
+  const addStream = (newStream: StreamProps) => {
+    if (newStream.error || newStream.mediaStream === undefined) return;
+
+    const stream = availableStreams().find(entry => entry.mediaStream.id === newStream.mediaStream.id);
+
+    if (stream === undefined)
+      streams.set([...availableStreams(), newStream]);
+  };
+
+  return {
+    stream: stream(),
+    streams: availableStreams(),
+    addStream,
+  };
 };
 
 export default StreamProvider;

@@ -12,9 +12,7 @@ const Video = (props: VideoProps) => {
   createEffect(() => {
     video.srcObject = props.stream;
     video.muted = props.muted;
-    video.addEventListener('loadedmetadata', () => {
-      video.play();
-    });
+    video.play();
   });
 
   return video;
