@@ -11,20 +11,23 @@ const useStream = () => {
   const getStream = (newStream: StreamProps) => availableStreams().find(entry => entry.mediaStream.id === newStream.mediaStream.id);
 
   const addStream = (newStream: StreamProps) => {
-    console.log('stream', newStream);
     if (newStream.error || newStream.mediaStream === undefined) return;
 
-    if (getStream(newStream) === undefined) {
-      console.log('adding stream', newStream.mediaStream.id);
+    if (getStream(newStream) === undefined)
       streams.set([...availableStreams(), newStream]);
-    }
   };
+
+  const removeStream = (streamId: string) => {
+    const updatedStreams = availableStreams().filter(stream => stream.peerId !== streamId);
+    streams.set(updatedStreams);
+  }
 
   return {
     stream: stream(),
     streams: availableStreams(),
     getStream,
     addStream,
+    removeStream,
   };
 };
 

@@ -10,7 +10,7 @@ const VideoGrid = () => {
     <div class="flex justify-center">
       <For each={streams}>
         {
-          (stream) => <Video muted={stream.muted} stream={stream.mediaStream} />
+          (stream) => <Video peer={stream.peerId} muted={stream.muted} stream={stream.mediaStream} />
         }
       </For>
     </div>

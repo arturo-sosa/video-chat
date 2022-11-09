@@ -13,7 +13,7 @@ type UserProps = {
 };
 
 const usePeer = () => {
-  const { stream, addStream } = useStream();
+  const { stream, addStream, removeStream } = useStream();
   const [socket] = createSignal(io("http://localhost:3000"));
   const [peer, setPeer] = createSignal<Peer>();
   const [peerUsers, setPeerUsers] = createSignal<Array<string>>([]);
@@ -32,11 +32,16 @@ const usePeer = () => {
       if (peer() === undefined || stream.mediaStream === undefined) return;
       if (peerUsers().includes(data.peer)) return;
 
-      console.log('joined-room', data.peer);
-
       const call = peer().call(data.peer, stream.mediaStream);
-      call.on('stream', handleCallStream);
+      call.on('stream', (callStream) => handleCallStream(callStream, call.peer));
       setPeerUsers([...peerUsers(), data.peer]);
+    });
+
+    socket().on('user-leaved', (data: UserProps) => {
+      const updatedPeers = peerUsers().filter(user => user !== data.peer);
+
+      removeStream(data.peer);
+      setPeerUsers(updatedPeers);
     });
   };
 
@@ -55,19 +60,20 @@ const usePeer = () => {
         peer: peerId
       });
 
-      handleCallStream(stream);
+      handleCallStream(stream, peerId);
     });
 
     peer.on('call', (call) => {
       call.answer(stream.mediaStream);
-      call.on('stream', handleCallStream);
+      call.on('stream', (callStream) => handleCallStream(callStream, call.peer));
     });
 
     setPeer(peer);
   };
 
-  const handleCallStream = (peerStream) => {
+  const handleCallStream = (peerStream, peerId) => {
     addStream({
+      peerId,
       mediaStream: peerStream.mediaStream ?? peerStream,
       muted: peerStream.muted ?? true,
     });

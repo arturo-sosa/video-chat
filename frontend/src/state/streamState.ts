@@ -3,6 +3,7 @@ import { atom } from 'nanostores';
 export type StreamProps = {
   mediaStream: MediaStream | undefined;
   muted: boolean;
+  peerId?: string;
   error?: Error | undefined;
 };
 
