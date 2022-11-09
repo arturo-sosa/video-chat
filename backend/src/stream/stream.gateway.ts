@@ -1,4 +1,4 @@
-import { MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 type JoinRoomProps = {
@@ -40,6 +40,7 @@ export class StreamGateway implements OnGatewayDisconnect {
 
     room.users = room.users.filter(user => user !== user.id);
 
+    client.broadcast.emit('user-leaved', user);
     client.leave(room.id);
 
     if (room.users.length === 0)

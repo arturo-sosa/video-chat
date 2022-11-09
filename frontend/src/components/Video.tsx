@@ -1,21 +1,22 @@
 import 'solid-js';
-import { createEffect } from 'solid-js';
+import { onMount } from 'solid-js';
 
 type VideoProps = {
   stream: MediaStream;
   muted: boolean;
+  peer: string | undefined;
 };
 
 const Video = (props: VideoProps) => {
-  const video: HTMLVideoElement = <video class="bg-black h-60 w-80" /> as HTMLVideoElement;
+  let videoRef: HTMLVideoElement;
 
-  createEffect(() => {
-    video.srcObject = props.stream;
-    video.muted = props.muted;
-    video.play();
-  });
+  onMount(() => {
+    videoRef.srcObject = props.stream;
+    videoRef.muted = props.muted;
+    videoRef.play();
+  })
 
-  return video;
+  return <video data-peer={props.peer} ref={videoRef} class="bg-black h-60 w-80" />;
 };
 
 export default Video;
