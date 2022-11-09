@@ -1,7 +1,7 @@
 # Pet Project: Video Chat
 
 This application was made as a pet project to experiment with Astro and WebRTC.
-The frontend was made using AstroJS for rendering and SolidJS for component behavior.
+The frontend was made using AstroJS for rendering, SolidJS for component behavior and TailwindCSS for styling.
 The backend was made with NestJS.
 
 For comunication I am using sockets to manage chat rooms and webrtc for handling peer to peer comunication.
@@ -9,6 +9,7 @@ For comunication I am using sockets to manage chat rooms and webrtc for handling
 ## Frontend Frameworks
 - AstroJS
 - SolidJS
+- TailwindCSS
 
 ## Backend Frameworks
 - NestJS
