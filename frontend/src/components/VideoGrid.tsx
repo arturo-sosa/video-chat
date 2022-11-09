@@ -1,6 +1,6 @@
 import { For } from 'solid-js';
 
-import { useStream } from './Stream';
+import useStream from '../hooks/useStream';
 import Video from './Video';
 
 const VideoGrid = () => {
