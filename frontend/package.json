@@ -20,6 +20,7 @@
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
     "solid-js": "^1.4.3",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.0.24",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }
