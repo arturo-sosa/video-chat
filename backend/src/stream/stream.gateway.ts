@@ -1,5 +1,6 @@
 import { OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { v4 as uuid } from 'uuid';
 
 type JoinRoomProps = {
   room: string,
@@ -15,6 +16,7 @@ type UserProps = {
   id: string,
   peer: string,
   room: string,
+  name?: string,
 };
 
 @WebSocketGateway({
@@ -38,7 +40,7 @@ export class StreamGateway implements OnGatewayDisconnect {
 
     if (room === undefined) return;
 
-    room.users = room.users.filter(user => user !== user.id);
+    room.users = room.users.filter(peer => peer !== user.id);
 
     client.broadcast.emit('user-leaved', user);
     client.leave(room.id);
@@ -56,9 +58,29 @@ export class StreamGateway implements OnGatewayDisconnect {
 
     client.join(room.id);
     client.broadcast.emit('user-joined', user);
+
+    this.server.sockets.in(room.id).emit('receive-message', {
+      id: uuid(),
+      message: `${user.id} joined the room`,
+    });
   }
 
-  getRoom(roomId: string, clientId?: string) {
+  @SubscribeMessage('send-message')
+  sendMessage(client: Socket, data: string) {
+    const sender = this.getUser(client.id);
+
+    if (sender === undefined) return;
+
+    const message = {
+      id: uuid(),
+      sender: sender.name ?? sender.id,
+      message: data,
+    };
+
+    this.server.sockets.in(sender.room).emit('receive-message', message);
+  }
+
+  getRoom(roomId: string, clientId?: string): RoomProps {
     const room = this.rooms[roomId];
 
     if (room === undefined && clientId !== undefined) {
@@ -71,7 +93,7 @@ export class StreamGateway implements OnGatewayDisconnect {
     return this.rooms[roomId];
   }
 
-  getUser(clientId: string, data?: JoinRoomProps) {
+  getUser(clientId: string, data?: JoinRoomProps): UserProps {
     const user = this.users[clientId];
 
     if (user === undefined && data !== undefined) {

@@ -1,5 +1,5 @@
 import 'solid-js';
-import { createEffect, onMount } from 'solid-js';
+import { createEffect } from 'solid-js';
 import usePeer from '../hooks/usePeer';
 
 import useRoom from '../hooks/useRoom';
