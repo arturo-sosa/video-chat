@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Room from '../components/Room';
 import VideoGrid from '../components/VideoGrid';
-import Chat from '../components/Chat';
+import ChatLog from '../components/ChatLog';
 ---
 
 <Layout title="Welcome to Astro.">
@@ -13,7 +13,7 @@ import Chat from '../components/Chat';
     </div>
 
     <div class="chat">
-      <Chat client:load />
+      <ChatLog client:load />
     </div>
   </main>
 </Layout>
@@ -24,10 +24,10 @@ import Chat from '../components/Chat';
   }
 
   .media {
-    @apply flex flex-col flex-1;
+    @apply h-full flex flex-col flex-1 bg-indigo-900;
   }
 
   .chat {
-    @apply w-80 h-full flex;
+    @apply w-80 h-full flex bg-indigo-50;
   }
 </style>

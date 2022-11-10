@@ -1,5 +1,5 @@
 .message {
-  @apply flex flex-row overflow-hidden my-4;
+  @apply flex flex-row overflow-hidden my-2 py-2 px-4;
 }
 
 .group {
@@ -7,7 +7,7 @@
 }
 
 .header {
-  @apply flex flex-row items-center text-xs text-gray-400 font-bold;
+  @apply flex flex-row items-center text-xs text-indigo-500 font-bold;
 }
 
 .serverHeader {
@@ -19,9 +19,9 @@
 }
 
 .messageContent {
-  @apply text-sm px-2 mt-2 w-full;
+  @apply text-xs p-2 mt-2 w-full rounded-lg rounded-bl-none border-0 text-indigo-500 bg-white shadow-sm focus:outline-none border-indigo-500 ring-2 ring-indigo-500;
 }
 
 .time {
-  @apply text-gray-500;
+  @apply text-indigo-400;
 }
