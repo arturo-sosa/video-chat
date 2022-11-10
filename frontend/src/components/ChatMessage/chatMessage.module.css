@@ -1,0 +1,27 @@
+.message {
+  @apply flex flex-row;
+}
+
+.group {
+  @apply w-full transition-all duration-1000 ease-in-out;
+}
+
+.header {
+  @apply flex flex-row items-center text-xs text-gray-400 font-bold;
+}
+
+.serverHeader {
+  @apply header justify-center;
+}
+
+.userHeader {
+  @apply header justify-between;
+}
+
+.messageContent {
+  @apply text-sm px-2 mt-2 w-full rounded-lg border bg-white p-4 shadow-sm focus:outline-none;
+}
+
+.time {
+  @apply text-gray-500;
+}

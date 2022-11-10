@@ -1,25 +1,38 @@
-// Need the import for typings
+import { useStore } from '@nanostores/solid';
 import Peer from 'peerjs';
 import { io } from 'socket.io-client';
 import { createSignal, onMount } from 'solid-js';
 
+import { clientSocket } from '../state/peerState';
+import useChat from './useChat';
 import useRoom from './useRoom';
 import useStream from './useStream';
 
+import type { ChatMessage } from './../state/chatState';
+
+// Need the import for typings
 type UserProps = {
   id: string,
   peer: string,
   room: string,
 };
 
+type MessageProps = {
+  id: string,
+  sender?: string,
+  message: string,
+}
+
 const usePeer = () => {
   const { stream, addStream, removeStream } = useStream();
-  const [socket] = createSignal(io("http://localhost:3000"));
+  const { addMessage } = useChat();
   const [peer, setPeer] = createSignal<Peer>();
   const [peerUsers, setPeerUsers] = createSignal<Array<string>>([]);
   const { room } = useRoom();
+  const socket = useStore(clientSocket);
 
   onMount(() => {
+    clientSocket.set(io("http://localhost:3000"));
     setSocketConnection();
   });
 
@@ -43,6 +56,19 @@ const usePeer = () => {
       removeStream(data.peer);
       setPeerUsers(updatedPeers);
     });
+
+    socket().on('receive-message', (data: MessageProps) => {
+      const message: ChatMessage = {
+        ...data,
+        time: (new Date()).toTimeString().substring(0, 5),
+      };
+
+      addMessage(message);
+    });
+
+    setInterval(() => {
+      socket().emit('send-message', 'Hello World');
+    }, 1000);
   };
 
   const setPeerConnection = async () => {

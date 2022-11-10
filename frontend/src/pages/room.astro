@@ -2,17 +2,32 @@
 import Layout from '../layouts/Layout.astro';
 import Room from '../components/Room';
 import VideoGrid from '../components/VideoGrid';
+import Chat from '../components/Chat';
 ---
 
 <Layout title="Welcome to Astro.">
   <main id="app">
-    <Room client:load />
-    <VideoGrid client:load />
+    <div class="media">
+      <Room client:load />
+      <VideoGrid client:load />
+    </div>
+
+    <div class="chat">
+      <Chat client:load />
+    </div>
   </main>
 </Layout>
 
 <style>
   main#app {
-    @apply container mx-auto flex h-full w-full items-center flex-col;
+    @apply flex flex-row h-full w-full items-center;
+  }
+
+  .media {
+    @apply flex flex-col flex-1;
+  }
+
+  .chat {
+    @apply w-80 h-full;
   }
 </style>
