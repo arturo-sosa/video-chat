@@ -1,9 +1,9 @@
 .message {
-  @apply flex flex-row;
+  @apply flex flex-row overflow-hidden my-4;
 }
 
 .group {
-  @apply w-full transition-all duration-1000 ease-in-out;
+  @apply w-full transition-all duration-500 ease-in-out;
 }
 
 .header {
@@ -19,7 +19,7 @@
 }
 
 .messageContent {
-  @apply text-sm px-2 mt-2 w-full rounded-lg border bg-white p-4 shadow-sm focus:outline-none;
+  @apply text-sm px-2 mt-2 w-full;
 }
 
 .time {

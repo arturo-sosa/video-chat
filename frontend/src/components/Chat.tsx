@@ -1,7 +1,7 @@
 import ChatLog from "./ChatLog";
 
 const Chat = () => {
-  return <div>
+  return <div class="flex flex-1">
     <ChatLog />
   </div>;
 };
