@@ -1,20 +1,23 @@
+import { onMount } from 'solid-js';
+
 import styles from './chatMessage.module.css';
 
 import type { ChatMessage } from "../../state/chatState";
-import { createSignal, onMount } from 'solid-js';
-const ChatMessage = (props: ChatMessage) => {
+
+const ChatMessage = (props: ChatMessage & { idx: number; }) => {
   const { sender, time, message } = props;
-  const [isVisible, setVisible] = createSignal(false);
+  let groupRef;
 
   onMount(() => {
     setTimeout(() => {
-      setVisible(true);
+      groupRef.classList.remove('opacity-0');
+      groupRef.classList.remove('translate-y-4');
     }, 100);
   });
 
   return (
-    <div class={styles.message}>
-      <div classList={{ 'opacity-100': isVisible() }} class={`${styles.group} opacity-0`}>
+    <div class={styles.message} data-idx={props.idx}>
+      <div ref={groupRef} class={`${styles.group} opacity-0 translate-y-4`}>
         <div class={sender === undefined ? styles.serverHeader : styles.userHeader}>
           {sender === undefined && <span class={styles.serverMessage}>{message}</span>}
           {sender !== undefined && <span>User</span>}
