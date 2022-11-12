@@ -9,7 +9,7 @@ export const useRoom = () => {
     const params = new URLSearchParams(window.location.search);
     const paramId = params.get('id');
     const roomPrefix = paramId ? `room/${paramId}` : "room";
-    const request = await fetch(`http://localhost:3000/${roomPrefix}`);
+    const request = await fetch(`http://${window.location.hostname}:3000/${roomPrefix}`);
     const response = await request.json();
 
     return response;
