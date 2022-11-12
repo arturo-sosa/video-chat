@@ -32,7 +32,7 @@ const usePeer = () => {
   const socket = useStore(clientSocket);
 
   onMount(() => {
-    clientSocket.set(io("http://localhost:3000"));
+    clientSocket.set(io(`http://${window.location.hostname}:3000`));
     setSocketConnection();
   });
 
