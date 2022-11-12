@@ -20,7 +20,7 @@ const ChatMessage = (props: ChatMessage & { idx: number; }) => {
       <div ref={groupRef} class={`${styles.group} opacity-0 translate-y-4`}>
         <div class={sender === undefined ? styles.serverHeader : styles.userHeader}>
           {sender === undefined && <span class={styles.serverMessage}>{message}</span>}
-          {sender !== undefined && <span>User</span>}
+          {sender !== undefined && <span class="nowrap">{props.sender}</span>}
           {sender !== undefined && <span class={styles.time}>{time}</span>}
         </div>
 
