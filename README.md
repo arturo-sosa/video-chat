@@ -56,3 +56,15 @@ OR
   yarn install
   yarn run dev
 ```
+
+## TODO
+- Video grid
+- Select username
+- Select avatar
+- Add avatar to chat messages
+- Replace sender id for username on chat messages
+- Display participants list (Avatar, name and muted status)
+- Display video state (muted/unmuted icon and username)
+- Multi grid video display depending on number of streams available
+- Chat controls (toggle mute, toggle video, leave room and audio level)
+- Redesign app
