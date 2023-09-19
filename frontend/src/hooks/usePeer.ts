@@ -65,10 +65,6 @@ const usePeer = () => {
 
       addMessage(message);
     });
-
-    setInterval(() => {
-      socket().emit('send-message', 'Hello World');
-    }, 1000);
   };
 
   const setPeerConnection = async () => {
