@@ -25,8 +25,8 @@ type UserProps = {
   }
 })
 export class StreamGateway implements OnGatewayDisconnect {
-  rooms = new Set<RoomProps>();
-  users = new Set<UserProps>();
+  rooms = new Map<string, RoomProps>();
+  users = new Map<string, UserProps>();
 
   @WebSocketServer()
   server: Server;
@@ -40,7 +40,7 @@ export class StreamGateway implements OnGatewayDisconnect {
 
     if (room === undefined) return;
 
-    room.users = room.users.filter(peer => peer !== user.id);
+    room.users = room.users.filter((peer) => peer !== user.id);
 
     client.broadcast.emit('user-leaved', user);
     client.leave(room.id);
@@ -51,9 +51,14 @@ export class StreamGateway implements OnGatewayDisconnect {
     });
 
     if (room.users.length === 0)
-      delete this.rooms[room.id];
+      this.rooms.delete(room.id);
 
-    delete this.users[client.id];
+    this.users.delete(client.id);
+
+    this.server.sockets.in(room.id).emit('update-participants', {
+      id: uuid(),
+      message: this.getUsersInRoom(room.id),
+    });
   }
 
   @SubscribeMessage('join-room')
@@ -67,6 +72,11 @@ export class StreamGateway implements OnGatewayDisconnect {
     this.server.sockets.in(room.id).emit('receive-message', {
       id: uuid(),
       message: `${user.id} joined the room`,
+    });
+
+    this.server.sockets.in(room.id).emit('update-participants', {
+      id: uuid(),
+      message: this.getUsersInRoom(room.id),
     });
   }
 
@@ -86,29 +96,40 @@ export class StreamGateway implements OnGatewayDisconnect {
   }
 
   getRoom(roomId: string, clientId?: string): RoomProps {
-    const room = this.rooms[roomId];
+    const room = this.rooms.get(roomId);
 
     if (room === undefined && clientId !== undefined) {
-      this.rooms[roomId] = {
+      this.rooms.set(roomId, {
         id: roomId,
         users: [clientId]
-      };
+      });
     }
 
-    return this.rooms[roomId];
+    return this.rooms.get(roomId);
   }
 
   getUser(clientId: string, data?: JoinRoomProps): UserProps {
-    const user = this.users[clientId];
+    const user = this.users.get(clientId);
 
     if (user === undefined && data !== undefined) {
-      this.users[clientId] = {
+      this.users.set(clientId, {
         id: clientId,
         peer: data.peer,
         room: data.room,
-      };
+      });
     }
 
-    return this.users[clientId];
+    return this.users.get(clientId);
+  }
+  
+  getUsersInRoom(roomId: string) {
+    const list = [];
+
+    this.users.forEach((user) => {
+      if (user.room === roomId)
+        list.push(user.id);
+    });
+    
+    return list;
   }
 }

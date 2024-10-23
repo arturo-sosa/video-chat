@@ -1,11 +1,16 @@
+import { useStore } from '@nanostores/solid';
+import { createSignal, For } from "solid-js";
+
 import ChatLog from '../ChatLog';
 import ChatBox from '../ChatBox';
-import { createSignal } from 'solid-js';
+
+import { peerList } from '../../state/peerState';
 
 import styles from './tabs.module.css';
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = createSignal(0);
+  const peers = useStore(peerList);
 
   return (
     <div class={styles.tabs}>
@@ -27,10 +32,19 @@ const Tabs = () => {
       )}
 
       {activeTab() === 1 && (
-        <div>Placeholder</div>
+        <div class="h-full overflow-auto flex-1 scroll-smooth">
+          <div class="flex flex-col overflow-hidden my-2 py-2 px-4">
+            <For each={peers()}>
+              {
+                (peer) => <div class="flex flex-row items-center text-xs text-indigo-500 font-bold">{peer}</div>
+              }
+            </For>
+          </div>
+        </div>
       )}
     </div>
-  );
+  )
+    ;
 }
 
 export default Tabs;

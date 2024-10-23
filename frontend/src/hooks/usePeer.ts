@@ -3,12 +3,12 @@ import Peer from 'peerjs';
 import { io } from 'socket.io-client';
 import { createSignal, onMount } from 'solid-js';
 
-import { clientSocket } from '../state/peerState';
+import { clientSocket, peerList } from '../state/peerState';
 import useChat from './useChat';
 import useRoom from './useRoom';
 import useStream from './useStream';
 
-import type { ChatMessage } from './../state/chatState';
+import type { ChatMessage } from '../state/chatState';
 
 // Need the import for typings
 type UserProps = {
@@ -27,9 +27,9 @@ const usePeer = () => {
   const { stream, addStream, removeStream } = useStream();
   const { addMessage } = useChat();
   const [peer, setPeer] = createSignal<Peer>();
-  const [peerUsers, setPeerUsers] = createSignal<Array<string>>([]);
   const { room } = useRoom();
   const socket = useStore(clientSocket);
+  const peers = useStore(peerList);
 
   onMount(() => {
     clientSocket.set(io(`http://${window.location.hostname}:3000`));
@@ -40,22 +40,22 @@ const usePeer = () => {
     socket().on('connect', () => {
       setPeerConnection();
     });
+    
+    socket().on('update-participants', (data: { message: Array<string> }) => {
+      peerList.set(data.message);
+    });
 
     socket().on('user-joined', (data: UserProps) => {
       if (data.room !== room().id) return;
       if (peer() === undefined || stream.mediaStream === undefined) return;
-      if (peerUsers().includes(data.peer)) return;
+      if (peers().includes(data.peer)) return;
 
       const call = peer().call(data.peer, stream.mediaStream);
       call.on('stream', (callStream) => handleCallStream(callStream, call.peer));
-      setPeerUsers([...peerUsers(), data.peer]);
     });
 
     socket().on('user-leaved', (data: UserProps) => {
-      const updatedPeers = peerUsers().filter(user => user !== data.peer);
-
       removeStream(data.peer);
-      setPeerUsers(updatedPeers);
     });
 
     socket().on('receive-message', (data: MessageProps) => {
