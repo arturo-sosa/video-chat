@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Room from '../components/Room';
 import VideoGrid from '../components/VideoGrid';
 import ChatLog from '../components/ChatLog';
+import ChatBox from '../components/ChatBox';
 ---
 
 <Layout title="Welcome to Astro.">
@@ -23,6 +24,7 @@ import ChatLog from '../components/ChatLog';
       </div>
 
       <ChatLog client:load />
+      <ChatBox client:load />
     </div>
   </main>
 </Layout>

@@ -9,7 +9,9 @@ const useChat = () => {
   const messages = useStore(chatMessages);
 
   const sendMessage = (message: string) => {
-    socket().emit('send-message', message);
+    if (message == null || message.trim().length === 0) return;
+
+    socket().emit('send-message', message.trim());
   };
 
   const addMessage = (message: ChatMessage) => {
