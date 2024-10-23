@@ -45,6 +45,11 @@ export class StreamGateway implements OnGatewayDisconnect {
     client.broadcast.emit('user-leaved', user);
     client.leave(room.id);
 
+    this.server.sockets.in(room.id).emit('receive-message', {
+      id: uuid(),
+      message: `${user.id} leaved the room`,
+    });
+
     if (room.users.length === 0)
       delete this.rooms[room.id];
 
