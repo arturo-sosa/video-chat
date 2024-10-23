@@ -42,6 +42,7 @@ const usePeer = () => {
     });
 
     socket().on('user-joined', (data: UserProps) => {
+      if (data.room !== room().id) return;
       if (peer() === undefined || stream.mediaStream === undefined) return;
       if (peerUsers().includes(data.peer)) return;
 
