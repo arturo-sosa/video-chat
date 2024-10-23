@@ -2,8 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Room from '../components/Room';
 import VideoGrid from '../components/VideoGrid';
-import ChatLog from '../components/ChatLog';
-import ChatBox from '../components/ChatBox';
+import Tabs from '../components/Tabs/Tabs';
 ---
 
 <Layout title="Welcome to Astro.">
@@ -13,19 +12,7 @@ import ChatBox from '../components/ChatBox';
       <VideoGrid client:load />
     </div>
 
-    <div class="chat">
-      <div class="flex justify-center gap-8 w-full">
-        <div class="border-b border-gray-200 w-full">
-          <nav class="-mb-px flex w-full" aria-label="Tabs">
-            <a href="#" class="flex-1 text-center border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Chat</a>
-            <a href="#" class="flex-1 text-center border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Participants</a>
-          </nav>
-        </div>
-      </div>
-
-      <ChatLog client:load />
-      <ChatBox client:load />
-    </div>
+    <Tabs client:load />
   </main>
 </Layout>
 
@@ -36,9 +23,5 @@ import ChatBox from '../components/ChatBox';
 
   .media {
     @apply h-full flex flex-col flex-1 bg-indigo-900;
-  }
-
-  .chat {
-    @apply w-80 h-full flex bg-indigo-50 flex-col;
   }
 </style>
