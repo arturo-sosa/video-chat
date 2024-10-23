@@ -7,7 +7,7 @@ const VideoGrid = () => {
   const { streams } = useStream();
 
   return (
-    <div class="flex justify-center gap-4">
+    <div class="flex w-full justify-center gap-4 flex-wrap">
       <For each={streams}>
         {
           (stream) => <Video peer={stream.peerId} muted={stream.muted} stream={stream.mediaStream} />
