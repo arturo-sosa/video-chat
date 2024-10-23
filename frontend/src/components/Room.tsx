@@ -15,8 +15,8 @@ const Room = () => {
     usePeer();
   });
 
-  return <div class="h-8 flex">
-    <div>
+  return <div class="h-8 flex mx-4 my-2">
+    <div class="text-white">
       {
         room().loading
           ? <div>Waiting for room</div>
@@ -24,7 +24,7 @@ const Room = () => {
       }
     </div>
 
-    <div class="flex flex-row">
+    <div class="flex flex-row text-white">
       <span class="mx-2">-</span>
       {
         (userMedia.error || userMedia() === undefined)
