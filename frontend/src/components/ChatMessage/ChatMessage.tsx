@@ -2,9 +2,9 @@ import { onMount } from 'solid-js';
 
 import styles from './chatMessage.module.css';
 
-import type { ChatMessage } from "../../state/chatState";
+import type { ChatMessage as ChatMessageState } from "../../state/chatState";
 
-const ChatMessage = (props: ChatMessage & { idx: number; }) => {
+const ChatMessage = (props: ChatMessageState & { idx: number; }) => {
   const { sender, time, message } = props;
   let groupRef;
 
